@@ -1,0 +1,32 @@
+type Ad {
+	id:						ID!
+	campaignIds:			[ID]!
+	ad_name:				String
+	initiative_id:			ID!
+	start_date:				String
+	end_date:				String
+	_date:					String
+	budget_burn:			Float
+	avg_daily_budget_burn:	Float
+	revenue:				Float
+	reach:					Float
+	frequency:				Int
+	clicks:					Int
+	impressions:			Int
+	ctr:					Float
+	conversion:				Int
+	channel:				String
+	platform:				String
+	province:				String
+	country:				String
+	engagement_index:		Float
+	reach_index:			Float
+	reach_cumulative:		Float
+	impression_cumulative:	Float
+}
+type Query {
+	ad(id: ID):	[Ad]
+}
+type Mutation {
+	mock: String
+}

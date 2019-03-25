@@ -1,0 +1,12 @@
+#import Campaign from "../campaign/schema.graphql"
+
+type MediaPlan {
+	id: ID!
+	campaigns(id: [ID!]): [Campaign!]
+}
+type Query {
+	mediaplan(id: [ID!]): 	[MediaPlan]
+}
+type Mutation {
+	mock: String
+}

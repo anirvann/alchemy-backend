@@ -1,0 +1,12 @@
+# import Ad from "../ad/schema.graphql"
+
+type AdSet {
+	id: ID!
+	ads(id: [ID!]): [Ad!]
+}
+type Query {
+	adset(id: ID): [AdSet]
+}
+type Mutation {
+	mock: String
+}

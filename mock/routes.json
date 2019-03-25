@@ -1,0 +1,6 @@
+{
+  "/mediaplan\\?id=:id": "/mediaplan/:id",
+  "/campaign\\?id=:id": "/campaign/:id",
+  "/adset\\?id=:id": "/adset/:id",
+  "/ad\\?id=:id": "/ad/:id"
+}
