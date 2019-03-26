@@ -8,7 +8,7 @@
     "start:cached": "cross-env NODE_CACHED=true && nodemon --exec babel-node src/index.js",
     "start:cached:mocked": "cross-env NODE_CACHED=true && NODE_MOCKED=true && nodemon --exec babel-node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mock": "json-server --delay 3000 --watch ./mock/success.json --routes ./mock/routes.json --middlewares ./mock/logMiddleware.js --port 3003"
+    "mock": "json-server --delay 5000 --watch ./mock/success.json --routes ./mock/routes.json --middlewares ./mock/logMiddleware.js --port 3003"
   },
   "author": "Anirvann Das",
   "license": "ISC",

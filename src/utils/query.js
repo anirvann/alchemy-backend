@@ -1,10 +1,11 @@
 import axios from "axios";
-// import pg from "pg";
+
+const cache = {};
 
 const xhr = axios.create({
   baseURL: process.env.MOCK_URL
 });
-
+// const client = redis.createClient();
 // const pool = new pg.Pool({
 //   user: "me",
 //   host: "localhost",
@@ -13,25 +14,39 @@ const xhr = axios.create({
 //   port: 5432
 // });
 
-export const nestedQueryResolver = (endPoint, idKey) => async (
+export const nestedQueryResolver = (endPoint, idKey) => (
   parent,
   _args
 ) => {
-  return await xhr.get(endPoint).then(
-    response => {
-      if (_args.id && _args.id.length) {
-        return response.data.filter(
-          datum =>
-            _args.id.includes(datum.id) && parent[idKey].includes(datum.id)
-        );
-      } else if (parent[idKey] && parent[idKey].length) {
-        return response.data.filter(datum => parent[idKey].includes(datum.id));
-      } else {
-        return response.data;
-      }
-    },
-    err => console.error(err)
-  );
+  if(cache[endPoint]){
+    if (_args.id && _args.id.length) {
+      return cache[endPoint].data.filter(
+        datum =>
+          _args.id.includes(datum.id) && parent[idKey].includes(datum.id)
+      );
+    } else if (parent[idKey] && parent[idKey].length) {
+      return cache[endPoint].data.filter(datum => parent[idKey].includes(datum.id));
+    } else {
+      return cache[endPoint].data;
+    }
+  }else {
+    return xhr.get(endPoint).then(
+      response => {
+        cache[endPoint] = response;
+        if (_args.id && _args.id.length) {
+          return response.data.filter(
+            datum =>
+              _args.id.includes(datum.id) && parent[idKey].includes(datum.id)
+          );
+        } else if (parent[idKey] && parent[idKey].length) {
+          return response.data.filter(datum => parent[idKey].includes(datum.id));
+        } else {
+          return response.data;
+        }
+      },
+      err => console.error(err)
+    );
+  }
 };
 
 export const queryResolver = endPoint => async (_, _args) =>
