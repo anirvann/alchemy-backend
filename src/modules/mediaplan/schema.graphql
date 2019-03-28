@@ -1,7 +1,11 @@
 #import Campaign from "../campaign/schema.graphql"
 
 type MediaPlan {
-	id: ID!
+	id: ID!,
+	budget_burned:	String!,
+	budget_estimate:	String!,
+	targetted_audience: String!,
+	initiative: String!,
 	campaigns(id: [ID!]): [Campaign!]
 }
 type Query {
