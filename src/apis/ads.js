@@ -7,7 +7,5 @@ const xhr = axios.create({
 });
 
 export class AdsService {
-  async getAds(adsColln) 
-    return await xhr.get(`/ads${!!adsColln? '/' + adsColln : ''}`);
-  }
+  getAds(adsColln){ return xhr.get(`/ads${!!adsColln? '/' + adsColln : ''}`) }
 }

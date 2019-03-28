@@ -1,52 +1,45 @@
 import axios from "axios";
+import ioredis from "ioredis";
 
-const cache = {};
-
+const client = new ioredis();
 const xhr = axios.create({
   baseURL: process.env.MOCK_URL
 });
-// const client = redis.createClient();
-// const pool = new pg.Pool({
-//   user: "me",
-//   host: "localhost",
-//   database: "dev-alchemy",
-//   password: "password",
-//   port: 5432
-// });
 
-export const nestedQueryResolver = (endPoint, idKey) => (
-  parent,
-  _args
-) => {
-  if(cache[endPoint]){
-    if (_args.id && _args.id.length) {
-      return cache[endPoint].data.filter(
-        datum =>
-          _args.id.includes(datum.id) && parent[idKey].includes(datum.id)
-      );
-    } else if (parent[idKey] && parent[idKey].length) {
-      return cache[endPoint].data.filter(datum => parent[idKey].includes(datum.id));
-    } else {
-      return cache[endPoint].data;
-    }
-  }else {
-    return xhr.get(endPoint).then(
-      response => {
-        cache[endPoint] = response;
-        if (_args.id && _args.id.length) {
-          return response.data.filter(
-            datum =>
-              _args.id.includes(datum.id) && parent[idKey].includes(datum.id)
-          );
-        } else if (parent[idKey] && parent[idKey].length) {
-          return response.data.filter(datum => parent[idKey].includes(datum.id));
-        } else {
-          return response.data;
-        }
-      },
-      err => console.error(err)
-    );
-  }
+export const xhrWrapper = endpoint => {
+  return client
+    .get(endpoint)
+    .then(response => {
+      if(response){
+        return { data: JSON.parse(response) };
+      }else {
+        return xhr.get(endpoint).then(response => {
+          console.log(response.data);
+          client.set(endpoint, JSON.stringify(response.data));
+          return response;
+        });
+      }
+    })
+    .catch(err => console.error(`REST API call failed :: ${err}`))
+}
+
+export const nestedQueryResolver = (endPoint, idKey) => (parent, _args) => {
+  return xhrWrapper(endPoint).then(
+    response => {
+      if (_args.id && _args.id.length && idKey) {
+        return response.data.filter(
+          datum =>
+            _args.id.includes(datum.id) && parent[idKey].includes(datum.id)
+        );
+      } else if (parent && parent[idKey] && parent[idKey].length) {
+        return response.data.filter(datum => parent[idKey].includes(datum.id));
+      } else {
+        return response.data;
+      }
+    },
+    err => console.error(err)
+  )
+  .catch(err => console.error(err));
 };
 
 export const queryResolver = endPoint => async (_, _args) =>
@@ -59,11 +52,3 @@ export const queryResolver = endPoint => async (_, _args) =>
           : response.data,
       err => console.error(err)
     );
-
-// export const getAds = async (request, response) =>
-//   await pool.query("SELECT * FROM ads ORDER BY id ASC", (error, results) => {
-//     if (error) {
-//       throw error;
-//     }
-//     response.status(200).json(results.rows);
-//   });
