@@ -1,0 +1,6 @@
+FROM node:latest
+WORKDIR /app
+ADD . /app
+EXPOSE 3003
+RUN npm install
+ENTRYPOINT ["npm", "run", "mock"]

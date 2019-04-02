@@ -1,0 +1,29 @@
+version: '3'
+services:
+  graphql:
+    links:
+      - redis
+      - mock
+    environment:
+      - REDIS_URL=redis-cache
+      - MOCK_URL=http://mock
+      - MOCK_URL_PORT=3003
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mock
+      - redis
+    ports:
+      - 4000:4000
+  redis:
+    image: "redis:alpine"
+    container_name: redis-cache
+    expose:
+      - 6379
+  mock:
+    build:
+      context: .
+      dockerfile: Dockerfile-mock
+    ports:
+      - 3003:3003

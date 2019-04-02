@@ -1,9 +1,9 @@
 import axios from "axios";
 import ioredis from "ioredis";
 
-const client = new ioredis();
+const client = new ioredis({ host: process.env.REDIS_URL });
 const xhr = axios.create({
-  baseURL: process.env.MOCK_URL
+  baseURL: `${process.env.MOCK_URL}:${process.env.MOCK_URL_PORT}`
 });
 
 export const xhrWrapper = endpoint => {
@@ -14,7 +14,6 @@ export const xhrWrapper = endpoint => {
         return { data: JSON.parse(response) };
       }else {
         return xhr.get(endpoint).then(response => {
-          console.log(response.data);
           client.set(endpoint, JSON.stringify(response.data));
           return response;
         });
