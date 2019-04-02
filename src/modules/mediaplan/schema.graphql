@@ -6,6 +6,8 @@ type MediaPlan {
 	budget_estimate:	String!,
 	targetted_audience: String!,
 	initiative: String!,
+	start_date: String!,
+	end_date: String!,
 	campaigns(id: [ID!]): [Campaign!]
 }
 type Query {

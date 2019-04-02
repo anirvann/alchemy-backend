@@ -1,8 +1,8 @@
 {  
 "mediaplan": [
-{ "id": "MediaPlan D", "campaignIds": ["Campaign D"], "initiative": "Initiative A", "budget_estimate": "24,200", "budget_burned": "20,110", "targetted_audience": "25,000" },
-{ "id": "MediaPlan F", "campaignIds": ["Campaign F"], "initiative": "Initiative B", "budget_estimate": "22,200", "budget_burned": "19,100", "targetted_audience": "17,800" },
-{ "id": "MediaPlan J", "campaignIds": ["Campaign A"], "initiative": "Initiative C", "budget_estimate": "20,200", "budget_burned": "10,410", "targetted_audience": "10,000" }  
+{ "id": "MediaPlan D", "campaignIds": ["Campaign D"], "initiative": "Initiative A", "budget_estimate": "24,200", "budget_burned": "20,110", "targetted_audience": "25,000", "start_date": "2017-01-15", "end_date": "2017-01-30" },
+{ "id": "MediaPlan F", "campaignIds": ["Campaign F"], "initiative": "Initiative B", "budget_estimate": "22,200", "budget_burned": "19,100", "targetted_audience": "17,800", "start_date": "2017-01-16", "end_date": "2017-01-30" },
+{ "id": "MediaPlan J", "campaignIds": ["Campaign A"], "initiative": "Initiative C", "budget_estimate": "20,200", "budget_burned": "10,410", "targetted_audience": "10,000", "start_date": "2017-01-17", "end_date": "2017-01-30" }  
 ],
 "campaign": [
 { "id": "Campaign D", "adsetIds": ["Adset D", "Adset E"] },
